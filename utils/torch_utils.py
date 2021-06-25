@@ -1,8 +1,6 @@
 """
-__file_name__   = 'torch_utils'
 __author__      = 'kwok'
 __time__        = '2021/6/24 15:52'
-__product_name  = PyCharm
 """
 import logging
 import os

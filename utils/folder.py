@@ -1,8 +1,6 @@
 """
-__file_name__   = 'folder'
 __author__      = 'kwok'
 __time__        = '2021/6/25 14:10'
-__product_name  = PyCharm
 """
 from torchvision.datasets.vision import VisionDataset
 from torchvision.datasets.folder import default_loader, make_dataset

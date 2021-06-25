@@ -1,8 +1,6 @@
 """
-__file_name__   = 'predict'
 __author__      = 'kwok'
 __time__        = '2021/6/23 17:20'
-__product_name  = PyCharm
 """
 import torch
 from PIL import Image

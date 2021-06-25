@@ -1,8 +1,6 @@
 """
-__file_name__   = 'test'
 __author__      = 'kwok'
 __time__        = '2021/6/22 17:35'
-__product_name  = PyCharm
 """
 import torch
 import torch.nn as nn
