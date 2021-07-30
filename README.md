@@ -1,2 +1,4 @@
-# pytorch_dogs_vs_cats
-pytorch resnet
+# Pytorch Resnet 迁移训练
+
+* Warm Up
+* LabelSmoothingCrossEntropy
