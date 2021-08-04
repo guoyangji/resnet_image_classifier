@@ -4,10 +4,11 @@ __time__        = '2021/6/22 17:35'
 """
 import torch
 import torch.nn as nn
-from torch.optim.lr_scheduler import StepLR, ExponentialLR
+from torch.optim.lr_scheduler import StepLR
 from torchvision import transforms, models
 from torch.utils.data import DataLoader
-from utils import select_device, ImageFolder, LabelSmoothingCrossEntropy, GradualWarmUpScheduler
+from utils import select_device, ImageFolder
+from tricks import LabelSmoothingCrossEntropy, GradualWarmUpScheduler, ImbalancedDatasetSampler
 import os
 from tqdm import tqdm
 import argparse
@@ -40,7 +41,9 @@ def train():
         # 将图片数据转为Tensor
         transforms.ToTensor(),
         # 数据标准化
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        # 图片随机擦除, 默认概率为 0.5
+        transforms.RandomErasing()
     ])
 
     val_transform = transforms.Compose([
@@ -56,17 +59,16 @@ def train():
     # 加载训练集图片数据
     # torchvision 实现的 ImageFolder 是读取训练集子目录名 sort() 排序后作为 class name, 没法自定义class index, 所以自己重写一个
     train_dataset = ImageFolder(root=os.path.join(path, 'train'), transform=train_transform, labels=labels)
+    # 打乱图片数据，并根据 batch_size 分批, 增加非均衡数据集采样器
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, sampler=ImbalancedDatasetSampler(train_dataset))
+    val_dataset = ImageFolder(root=os.path.join(path, 'val'), transform=val_transform, labels=labels)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, sampler=ImbalancedDatasetSampler(val_dataset))
     # {'black': 0, 'blue': 1, 'gray': 2, 'red': 3, 'yellow': 4}
     labels = train_dataset.class_to_idx
     # 将标签索引与标签存进 json 文件
     cls_dict = dict((val, key) for key, val in labels.items())
     with open('./labels/{}.json'.format(path.split('/')[-1]), 'w') as f:
         f.write(json.dumps(cls_dict, indent=4))
-
-    # 打乱图片数据，并根据 batch_size 分批
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_dataset = ImageFolder(root=os.path.join(path, 'val'), transform=val_transform, labels=labels)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
 
     '''
     model_urls = {
