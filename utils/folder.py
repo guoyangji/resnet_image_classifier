@@ -137,3 +137,4 @@ class ImageFolder(DatasetFolder):
             labels=labels
         )
         self.images = self.samples
+        self.labels = labels
