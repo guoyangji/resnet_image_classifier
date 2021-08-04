@@ -6,7 +6,7 @@ from abc import ABC
 import torch.nn as nn
 import torch
 
-
+# 标签平滑交叉熵
 class LabelSmoothingCrossEntropy(nn.Module, ABC):
     def __init__(self, smoothing=0.1, dim=-1):
         super(LabelSmoothingCrossEntropy, self).__init__()

@@ -5,7 +5,7 @@ __time__        = '2021/7/30 13:41'
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
-
+# 学习率渐进预热调度
 class GradualWarmUpScheduler(_LRScheduler):
     """ Gradually warm-up(increasing) learning rate in optimizer.
     Proposed in 'Accurate, Large Mini Batch SGD: Training ImageNet in 1 Hour'.
