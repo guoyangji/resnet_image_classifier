@@ -42,7 +42,7 @@ def train():
         transforms.ToTensor(),
         # 数据标准化
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        # 图片随机擦除, 默认概率为 0.5
+        # 图片随机擦除, 只能在 ToTensor() 之后使用, 默认概率为 0.5
         transforms.RandomErasing()
     ])
 
@@ -59,7 +59,7 @@ def train():
     # 加载训练集图片数据
     # torchvision 实现的 ImageFolder 是读取训练集子目录名 sort() 排序后作为 class name, 没法自定义class index, 所以自己重写一个
     train_dataset = ImageFolder(root=os.path.join(path, 'train'), transform=train_transform, labels=labels)
-    # 打乱图片数据，并根据 batch_size 分批, 增加非均衡数据集采样器
+    # batch_size 分批, 增加非均衡数据集采样器, shuffle 和 sampler 不能同时使用
     train_loader = DataLoader(train_dataset, batch_size=batch_size, sampler=ImbalancedDatasetSampler(train_dataset))
     val_dataset = ImageFolder(root=os.path.join(path, 'val'), transform=val_transform, labels=labels)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, sampler=ImbalancedDatasetSampler(val_dataset))
