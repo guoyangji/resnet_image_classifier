@@ -182,14 +182,14 @@ def train():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=str, default='resnet50',
+    parser.add_argument('--model', type=str, default='resnet18',
                         help='支持resnet18,resnet34,resnet50,resnet101,resnet152,resnext50_32x4d,resnext101_32x8d,wide_resnet50_2,wide_resnet101_2')
-    parser.add_argument('--weights', type=str, default='weights/resnet50-19c8e357.pth', help='预训练模型路径')
+    parser.add_argument('--weights', type=str, default='weights/resnet18-5c106cde.pth', help='预训练模型路径')
     parser.add_argument('--device', default='', help='可使用的GPU, 支持输入 0 或 0,1,2,3 或 cpu')
-    parser.add_argument('--epochs', type=int, default=10)
-    parser.add_argument('--save-path', type=str, default='weights/uniform_resnet50.pt', help='训练完成后模型保存路径')
-    parser.add_argument('--dataset-path', type=str, default='../dataset/uniform', help='数据集路径')
-    parser.add_argument('--batch-size', type=int, default=16, help='批量大小')
-    parser.add_argument('--labels', type=list, default=['black', 'blue', 'gray', 'red', 'yellow'], help='数据集标签')
+    parser.add_argument('--epochs', type=int, default=1)
+    parser.add_argument('--save-path', type=str, default='weights/porn_resnet18.pt', help='训练完成后模型保存路径')
+    parser.add_argument('--dataset-path', type=str, default='../dataset/porn_dataset', help='数据集路径')
+    parser.add_argument('--batch-size', type=int, default=64, help='批量大小')
+    parser.add_argument('--labels', type=list, default=['normal', 'sexy', 'porn'], help='数据集标签')
     opt = parser.parse_args()
     train()
